@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>בר ים · BarYam</title>
+  <meta name="description" content="בר ים: בירה מהחבית, קוקטיילים ומטבח של שף. הזמנת שולחן ואירועים פרטיים.">
+  <meta name="theme-color" content="#0F2B36">
+  <meta property="og:title" content="BarYam">
+  <meta property="og:description" content="Beer on tap, cocktails and a chef's kitchen. Book a table or plan a private event.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="fonts/karantina-hebrew-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#main" data-t="skip">דילוג לתוכן</a>
+
+  <!-- Ripple filter for the reflection under the name -->
+  <svg class="defs" aria-hidden="true" focusable="false" width="0" height="0">
+    <filter id="ripple" x="-5%" y="-10%" width="110%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.005 0.07" numOctaves="2" seed="4" result="noise">
+        <animate attributeName="baseFrequency" dur="14s" values="0.005 0.07;0.007 0.09;0.005 0.07" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
+
+  <header class="top">
+    <a class="brand" href="#" aria-label="BarYam">BarYam</a>
+    <nav class="nav" aria-label="Main">
+      <a href="#menu" data-t="navMenu">תפריט</a>
+      <a href="#events" data-t="navEvents">אירועים</a>
+      <a href="#visit" data-t="navVisit">הגעה</a>
+    </nav>
+    <div class="top-actions">
+      <button class="lang" type="button" id="lang" data-t="langSwitch" aria-label="Switch to English">EN</button>
+      <a class="btn btn-small" href="#book" data-t="navBook">הזמנת שולחן</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-name">
+      <div class="mark-wrap">
+        <h1 class="mark" id="hero-name" data-t="heroName">בר ים</h1>
+        <div class="reflection" aria-hidden="true" data-t="heroName">בר ים</div>
+      </div>
+      <p class="hero-line" data-t="heroLine">בירה קרה, קוקטיילים רציניים ומטבח של שף. פתוחים כל ערב.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#book" data-t="heroBook">הזמינו שולחן</a>
+        <a class="btn btn-ghost" href="#events" data-t="heroEvent">תכננו אירוע</a>
+      </div>
+      <p class="tonight" id="tonight"></p>
+    </section>
+
+    <section class="menu section" id="menu" aria-labelledby="menu-title">
+      <h2 class="section-title" id="menu-title" data-t="menuTitle">בתפריט</h2>
+      <div class="menu-grid" id="menu-grid"></div>
+      <p class="fine" data-t="menuNote">התפריט מתחלף עם העונות. המחירים בש״ח.</p>
+    </section>
+
+    <section class="book section" id="book" aria-labelledby="book-title">
+      <div class="book-head">
+        <h2 class="section-title" id="book-title" data-t="bookTitle">הזמנת שולחן</h2>
+        <p class="lede" data-t="bookIntro">ההזמנה נשלחת ישר לוואטסאפ של הבר, ואנחנו חוזרים אליכם עם אישור.</p>
+        <p class="big-group"><span id="big-group-text"></span> <a href="#events" data-t="bigGroupLink">תכננו אירוע</a></p>
+      </div>
+
+      <form class="form" id="book-form" novalidate>
+        <div class="field">
+          <label for="b-name" data-t="fName">שם</label>
+          <input id="b-name" name="name" type="text" autocomplete="name" required>
+          <p class="err" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="b-phone" data-t="fPhone">טלפון</label>
+          <input id="b-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" dir="ltr" required>
+          <p class="err" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="b-date" data-t="fDate">תאריך</label>
+          <input id="b-date" name="date" type="date" required>
+          <p class="err" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="b-time" data-t="fTime">שעה</label>
+          <select id="b-time" name="time" required></select>
+          <p class="err" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="b-guests" data-t="fGuests">אורחים</label>
+          <select id="b-guests" name="guests" required></select>
+          <p class="err" aria-live="polite"></p>
+        </div>
+        <fieldset class="field seating">
+          <legend data-t="fSeating">איפה לשבת</legend>
+          <div class="chips">
+            <label><input type="radio" name="seating" value="seatAny" checked><span data-t="seatAny">לא משנה</span></label>
+            <label><input type="radio" name="seating" value="seatBar"><span data-t="seatBar">על הבר</span></label>
+            <label><input type="radio" name="seating" value="seatInside"><span data-t="seatInside">שולחן בפנים</span></label>
+            <label><input type="radio" name="seating" value="seatOutside"><span data-t="seatOutside">בחוץ</span></label>
+          </div>
+        </fieldset>
+        <div class="field wide">
+          <label for="b-notes" data-t="fNotes">הערות</label>
+          <textarea id="b-notes" name="notes" rows="3" data-t-placeholder="notesPlaceholder"></textarea>
+        </div>
+        <div class="form-end wide">
+          <button class="btn" type="submit" data-t="bookSubmit">שליחת ההזמנה בוואטסאפ</button>
+          <p class="done" role="status" data-t-done="bookDone"></p>
+        </div>
+      </form>
+    </section>
+
+    <section class="events section" id="events" aria-labelledby="events-title">
+      <h2 class="section-title" id="events-title" data-t="eventsTitle">אירועים פרטיים</h2>
+      <p class="lede" data-t="eventsIntro">ימי הולדת, ערבי צוות, השקות או כל הבר רק בשבילכם. השף בונה איתכם את התפריט.</p>
+      <ul class="event-list" id="event-list"></ul>
+
+      <form class="form" id="event-form" novalidate>
+        <div class="field">
+          <label for="e-name" data-t="fName">שם</label>
+          <input id="e-name" name="name" type="text" autocomplete="name" required>
+          <p class="err" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="e-phone" data-t="fPhone">טלפון</label>
+          <input id="e-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" dir="ltr" required>
+          <p class="err" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="e-type" data-t="fEventType">סוג האירוע</label>
+          <select id="e-type" name="type" required></select>
+          <p class="err" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="e-date" data-t="fEventDate">תאריך משוער</label>
+          <input id="e-date" name="date" type="date" required>
+          <p class="err" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="e-guests" data-t="fEventGuests">כמה אורחים בערך</label>
+          <input id="e-guests" name="guests" type="number" min="10" max="200" inputmode="numeric" required>
+          <p class="err" aria-live="polite"></p>
+        </div>
+        <div class="field wide">
+          <label for="e-notes" data-t="fNotes">הערות</label>
+          <textarea id="e-notes" name="notes" rows="3" data-t-placeholder="eventNotesPlaceholder"></textarea>
+        </div>
+        <div class="form-end wide">
+          <button class="btn" type="submit" data-t="eventSubmit">שליחת בקשה לאירוע</button>
+          <p class="done" role="status" data-t-done="eventDone"></p>
+        </div>
+      </form>
+    </section>
+
+    <section class="visit section" id="visit" aria-labelledby="visit-title">
+      <h2 class="section-title" id="visit-title" data-t="visitTitle">איך מגיעים</h2>
+      <div class="visit-grid">
+        <div>
+          <p class="address" id="address"></p>
+          <a class="text-link" id="maps-link" href="#" target="_blank" rel="noopener" data-t="mapsLink">פתיחה במפות</a>
+        </div>
+        <div>
+          <h3 data-t="hoursTitle">שעות פתיחה</h3>
+          <table class="hours" id="hours"></table>
+        </div>
+        <div>
+          <h3 data-t="contactTitle">דברו איתנו</h3>
+          <ul class="contact">
+            <li><a id="call-link" href="#"><span data-t="call">התקשרו</span> <bdi id="phone-display"></bdi></a></li>
+            <li><a id="wa-link" href="#" target="_blank" rel="noopener" data-t="whatsapp">וואטסאפ</a></li>
+            <li><a id="ig-link" href="#" target="_blank" rel="noopener" data-t="instagram">אינסטגרם</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p class="foot-mark">BarYam</p>
+    <p data-t="footerAge">שתו באחריות. אלכוהול מוגש מגיל 18 בלבד.</p>
+    <p class="fine">© <span id="year"></span> BarYam</p>
+  </footer>
+
+  <script src="content.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

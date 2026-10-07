@@ -1,0 +1,450 @@
+:root {
+  color-scheme: dark;
+  --deep: #0A1E26;   /* night sky */
+  --sea: #0F2B36;    /* the water */
+  --sea-up: #143847; /* raised surfaces */
+  --salt: #EDF1EE;   /* text */
+  --glass: #8FC1B5;  /* sea glass, secondary text */
+  --amber: #F0A53A;  /* beer, lights, actions */
+  --coral: #FF9B85;  /* errors only */
+  --line: rgba(237, 241, 238, 0.14);
+  --line-strong: rgba(237, 241, 238, 0.32);
+  --display: "Karantina", "Assistant", system-ui, sans-serif;
+  --body: "Assistant", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --max: 1120px;
+  --gutter: clamp(1rem, 4vw, 2rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-padding-top: 5rem; }
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, var(--deep) 0, var(--sea) 70vh) no-repeat, var(--sea);
+  color: var(--salt);
+  font-family: var(--body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; }
+img { max-width: 100%; }
+h1, h2, h3 { margin: 0; font-weight: 700; }
+p { margin: 0; }
+
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+.skip {
+  position: absolute;
+  inset-inline-start: 1rem;
+  top: -4rem;
+  z-index: 20;
+  background: var(--amber);
+  color: var(--deep);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.skip:focus { top: 1rem; }
+
+/* ---------- Header ---------- */
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.75rem var(--gutter);
+  background: rgba(10, 30, 38, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.brand {
+  font-family: var(--display);
+  font-size: 2rem;
+  line-height: 1;
+  text-decoration: none;
+  color: var(--salt);
+}
+.nav { display: flex; gap: 1.5rem; margin-inline-start: auto; }
+.nav a {
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--glass);
+}
+.nav a:hover { color: var(--salt); }
+.top-actions { display: flex; align-items: center; gap: 0.75rem; }
+.lang {
+  font: 700 0.95rem/1 var(--body);
+  color: var(--salt);
+  background: transparent;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 999px;
+  min-width: 2.75rem;
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  cursor: pointer;
+}
+.lang:hover { border-color: var(--salt); }
+
+@media (max-width: 720px) {
+  .nav { display: none; }
+  .top-actions { margin-inline-start: auto; }
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding: 0.75rem 1.6rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--amber);
+  color: var(--deep);
+  font: 700 1.05rem/1.1 var(--body);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.btn:hover { background: #F7B95E; }
+.btn-small { min-height: 2.5rem; padding: 0.5rem 1.1rem; font-size: 0.95rem; }
+.btn-ghost {
+  background: transparent;
+  color: var(--salt);
+  box-shadow: inset 0 0 0 1.5px var(--line-strong);
+}
+.btn-ghost:hover { background: rgba(237, 241, 238, 0.08); }
+
+/* ---------- Hero: the name and its reflection in the water ---------- */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: clamp(3rem, 9vh, 6rem) var(--gutter) clamp(3rem, 8vh, 5rem);
+  min-height: calc(100svh - 4rem);
+  justify-content: center;
+  overflow: hidden;
+}
+.mark-wrap { position: relative; width: 100%; }
+.mark,
+.reflection {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(7.5rem, 36vw, 15rem);
+  line-height: 0.82;
+  padding-top: 0.06em;
+}
+.mark {
+  position: relative;
+  color: var(--salt);
+  text-shadow: 0 0 0.35em rgba(240, 165, 58, 0.22);
+}
+/* the horizon */
+.mark::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -0.02em;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(240, 165, 58, 0.7) 25%, rgba(143, 193, 181, 0.7) 75%, transparent);
+}
+.reflection {
+  color: var(--amber);
+  /* flipped and squashed like a reflection on water; origin chosen so it hangs from the horizon */
+  transform: scaleY(-0.6);
+  transform-origin: 50% 37.5%;
+  filter: url(#ripple) blur(0.6px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 15%, rgba(0, 0, 0, 0.9) 100%);
+  mask-image: linear-gradient(to bottom, transparent 15%, rgba(0, 0, 0, 0.9) 100%);
+  opacity: 0.5;
+  margin-top: 0.04em;
+  margin-bottom: -0.35em;
+  user-select: none;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .reflection { animation: lights-on 2.2s ease-out 0.3s both; }
+}
+@keyframes lights-on {
+  from { opacity: 0; }
+  to { opacity: 0.5; }
+}
+
+.hero-line {
+  max-width: 34ch;
+  margin-top: 1rem;
+  font-size: clamp(1.2rem, 2.6vw, 1.5rem);
+  line-height: 1.45;
+  color: var(--salt);
+  position: relative;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+.tonight {
+  margin-top: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--glass);
+  font-weight: 600;
+}
+.tonight::before {
+  content: "";
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 0.6rem var(--amber);
+}
+.tonight.is-closed::before { background: var(--line-strong); box-shadow: none; }
+.tonight:empty { display: none; }
+
+/* ---------- Sections ---------- */
+.section {
+  max-width: var(--max);
+  margin-inline: auto;
+  padding: clamp(4rem, 10vw, 7rem) var(--gutter);
+}
+.section-title {
+  font-family: var(--display);
+  font-size: clamp(3.5rem, 11vw, 6.5rem);
+  line-height: 0.9;
+  margin-bottom: 1.25rem;
+}
+.lede {
+  max-width: 52ch;
+  font-size: 1.2rem;
+  color: var(--glass);
+}
+.fine { font-size: 0.95rem; color: var(--glass); }
+
+/* ---------- Menu ---------- */
+.menu-grid {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 4rem);
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+@media (min-width: 900px) {
+  .menu-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.menu-col h3 {
+  font-family: var(--display);
+  font-size: 2.6rem;
+  line-height: 1;
+  color: var(--amber);
+  margin-bottom: 1.25rem;
+}
+.menu-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem; }
+.dish-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+.dish-row::after { content: none; }
+.dish-leader {
+  flex: 1;
+  min-width: 1.5rem;
+  border-bottom: 2px dotted var(--line-strong);
+  transform: translateY(-0.3em);
+}
+.dish-price { font-variant-numeric: tabular-nums; }
+.dish-desc { color: var(--glass); font-size: 1rem; margin-top: 0.15rem; }
+
+/* ---------- Booking ---------- */
+.book {
+  background: var(--sea-up);
+  border-radius: clamp(0px, 2vw, 28px);
+  display: grid;
+  gap: 2.5rem;
+  margin-block: clamp(1rem, 4vw, 3rem);
+}
+@media (min-width: 960px) {
+  .book { grid-template-columns: 1fr 1.4fr; align-items: start; }
+}
+@media (max-width: 1160px) {
+  .book { border-radius: 0; }
+}
+.big-group { margin-top: 1.25rem; color: var(--glass); }
+.big-group a { color: var(--amber); font-weight: 700; }
+
+/* ---------- Forms ---------- */
+.form {
+  display: grid;
+  gap: 1.1rem 1rem;
+}
+@media (min-width: 640px) {
+  .form { grid-template-columns: 1fr 1fr; }
+  .form .wide { grid-column: 1 / -1; }
+}
+.field { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+.field label,
+.field legend {
+  font-weight: 600;
+  font-size: 0.98rem;
+}
+fieldset.field { border: 0; margin: 0; padding: 0; }
+.form input,
+.form select,
+.form textarea {
+  width: 100%;
+  font: 400 1rem/1.4 var(--body);
+  color: var(--salt);
+  background: rgba(237, 241, 238, 0.06);
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  padding: 0.75rem 0.9rem;
+  min-height: 3rem;
+}
+.form select { appearance: none; -webkit-appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--glass) 50%), linear-gradient(135deg, var(--glass) 50%, transparent 50%); background-size: 6px 6px; background-repeat: no-repeat; background-position: calc(100% - 1.3rem) 1.3rem, calc(100% - 0.95rem) 1.3rem; padding-inline-end: 2.4rem; }
+[dir="rtl"] .form select { background-position: 0.95rem 1.3rem, 1.3rem 1.3rem; }
+.form select option { background: var(--sea); color: var(--salt); }
+.form textarea { resize: vertical; min-height: 6rem; }
+.form input::placeholder,
+.form textarea::placeholder { color: rgba(143, 193, 181, 0.7); }
+.form input:hover,
+.form select:hover,
+.form textarea:hover { border-color: var(--line-strong); }
+.form input:focus-visible,
+.form select:focus-visible,
+.form textarea:focus-visible { outline: 2px solid var(--amber); outline-offset: 1px; border-color: transparent; }
+.field.has-error input,
+.field.has-error select { border-color: var(--coral); }
+.err { color: var(--coral); font-size: 0.9rem; min-height: 0; }
+.err:empty { display: none; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.15rem; }
+.chips label { position: relative; cursor: pointer; }
+.chips input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.chips span {
+  display: inline-block;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  font-weight: 600;
+  color: var(--glass);
+}
+.chips label:hover span { border-color: var(--line-strong); color: var(--salt); }
+.chips input:checked + span {
+  border-color: var(--amber);
+  color: var(--salt);
+  background: rgba(240, 165, 58, 0.14);
+}
+.chips input:focus-visible + span { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+.form-end { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: 0.5rem; }
+.done { color: var(--glass); font-weight: 600; max-width: 40ch; }
+
+/* ---------- Events ---------- */
+.event-list {
+  list-style: none;
+  margin: 2.5rem 0 3rem;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.event-list li {
+  display: grid;
+  grid-template-columns: minmax(6.5rem, 9rem) 1fr;
+  gap: 0.25rem 1.5rem;
+  align-items: baseline;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.event-size {
+  grid-row: span 2;
+  font-family: var(--display);
+  font-size: clamp(3.5rem, 9vw, 5rem);
+  line-height: 0.9;
+  color: var(--amber);
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+  text-align: start;
+}
+[dir="rtl"] .event-size { text-align: end; }
+.event-list h3 { font-size: 1.35rem; }
+.event-cap { color: var(--salt); font-weight: 600; margin-inline-start: 0.5rem; font-size: 1rem; opacity: 0.75; }
+.event-desc { color: var(--glass); max-width: 55ch; }
+@media (max-width: 520px) {
+  .event-list li { grid-template-columns: 1fr; }
+  .event-size { grid-row: auto; }
+}
+
+/* ---------- Visit ---------- */
+.visit-grid {
+  display: grid;
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+@media (min-width: 860px) {
+  .visit-grid { grid-template-columns: 1.2fr 1fr 0.8fr; }
+}
+.visit h3 {
+  font-size: 1rem;
+  color: var(--glass);
+  margin-bottom: 0.75rem;
+}
+.address {
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 6vw, 3rem);
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+.text-link { color: var(--amber); font-weight: 700; text-underline-offset: 0.25em; }
+.hours { border-collapse: collapse; width: 100%; max-width: 22rem; }
+.hours td { padding: 0.3rem 0; border-bottom: 1px solid var(--line); }
+.hours td:last-child { text-align: end; font-variant-numeric: tabular-nums; }
+.hours tr.is-today td { color: var(--amber); font-weight: 700; }
+.contact { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+.contact a { font-weight: 600; text-underline-offset: 0.25em; }
+.contact a:hover { color: var(--amber); }
+
+/* ---------- Footer ---------- */
+.foot {
+  text-align: center;
+  padding: 4rem var(--gutter) 3rem;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 0.5rem;
+  color: var(--glass);
+}
+.foot-mark {
+  font-family: var(--display);
+  font-size: 3rem;
+  line-height: 1;
+  color: var(--salt);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reflection { filter: blur(0.6px); }
+}
